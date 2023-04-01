@@ -26,7 +26,11 @@ void handler(int num)
 		c = c + (1 << i);
 	i++;
 	if (i == 8)
+	{
 		write(1, &c, 1);
+		i = 0;
+		c = 0;
+	}
 }
 
 int main (int argc, char *argv[])
@@ -35,15 +39,8 @@ int main (int argc, char *argv[])
 
 	pid =  getpid();
 	printf("%d\n", pid);
-	signal(SIGUSR1, handler);
-	signal(SIGUSR2, handler);
-	// signal(SIGUSR2, handler);
-	// signal(SIGUSR1, handler);
-	// signal(SIGUSR2, handler);
-	// signal(SIGUSR1, handler);
-	// signal(SIGUSR1, handler);
-	// signal(SIGUSR2, handler);
-	// signal(SIGUSR2, handler);
+	sigaction(SIGUSR1, handler, NULL);
+	sigaction(SIGUSR2, handler, NULL);
 	while(1)
 		pause();
 }

@@ -23,23 +23,32 @@
 int main (int argc, char *argv[])
 {
     int i;
+    int j;
 
     i = 0;
+    j = 0;
     int pid = atoi(argv[1]);
-    while (i < 8)
+    if (argc == 3)
     {
-        if (((*argv[2] >> i) & 1) == 1)
+        while (argv[2][j])
         {
-            if (kill(pid, SIGUSR1) == -1)
-                return (0);
+                while (i < 8)
+                {
+                        if (((argv[2][j] >> i) & 1) == 1)
+                        {
+                                if (kill(pid, SIGUSR1) == -1)
+                                        return (0);
+                        }
+                        else
+                        {
+                                if (kill(pid, SIGUSR2) == -1)
+                                        return (0);
+                        }
+                        usleep(700);
+                        i++;
+                }
+                j++;
         }
-        else
-        {
-            if (kill(pid, SIGUSR2) == -1)
-                return (0);
-        }
-        usleep(700);
-        i++;
     }
 }
 
