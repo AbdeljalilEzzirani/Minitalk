@@ -18,29 +18,38 @@
 #include <signal.h>
 #include <sys/types.h>
 
-void handler(int num)
+static void ft_handler(int num, siginfo_t *info, void*d)
 {
+	// (void)info;
+	(void)d;
 	static char c = 0;
-	static int i = 0;
+	static int bt = 0;
+	
 	if (num == SIGUSR1)
-		c = c + (1 << i);
-	i++;
-	if (i == 8)
+		c = c + (1 << bt);
+	bt++;
+	if (bt == 8)
 	{
-		write(1, &c, 1);
-		i = 0;
+		if (c != '\0')
+			write(1, &c, 1);
 		c = 0;
+		bt = 0;
 	}
 }
 
 int main (int argc, char *argv[])
 {
 	int pid;
+	struct sigaction signal;
 
 	pid =  getpid();
 	printf("%d\n", pid);
-	sigaction(SIGUSR1, handler, NULL);
-	sigaction(SIGUSR2, handler, NULL);
+	signal.sa_sigaction = ft_handler;
+	signal.sa_flags = SA_SIGINFO;
+	sigaction(SIGUSR1, &signal, NULL);
+	sigaction(SIGUSR2, &signal, NULL);
+	// signal(SIGUSR1, handler);
+	// signal(SIGUSR2, handler);
 	while(1)
 		pause();
 }
