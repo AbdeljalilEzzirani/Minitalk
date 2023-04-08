@@ -19,27 +19,27 @@
 #include <sys/types.h>
 #include <limits.h>
 
-void	ft_handler(int num, siginfo_t *siginfo, void *c)
+void	ft_handler(int num, siginfo_t *siginfo, void *cn)
 {
-	static unsigned char								l;
-	static int								i = 0;
-	static int								pid = 0;
+	static unsigned char		c = 0;
+	static int		i = 0;
+	static int		pid = 0;
 
-	(void)c;
+	(void)cn;
 	if (pid != (siginfo->si_pid))
 	{
 		pid = siginfo->si_pid;
-		l = 0;
+		c = 0;
 		i = 0;
 	}
 	if (num == SIGUSR1)
-		l = l + (1 << i);
+		c = c + (1 << i);
 	i++;
 	if (i == 8)
 	{
-		write(1, &l, 1);
+		write(1, &c, 1);
 		i = 0;
-		l = 0;
+		c = 0;
 	}
 }
 
@@ -52,11 +52,10 @@ int	main(int argc, char *argv[])
 	printf("%d\n", pid);
 	sa.sa_sigaction = ft_handler;
 	sa.sa_flags = SA_SIGINFO;
-	sigaction(SIGUSR1, &sa, NULL);
+	if (sigaction(SIGUSR1, &sa, NULL))
+		kill(pid, SIGUSR1);
 	sigaction(SIGUSR2, &sa, NULL);
-	if (sigaction)
-		kill(pid, SIGUSR2);
-	printf("Waiting for signal...\n");
+	printf("BONUS say : Waiting for signal...\n");
 	while (1)
 		pause();
 }
