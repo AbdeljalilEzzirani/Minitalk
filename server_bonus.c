@@ -10,22 +10,31 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <limits.h>
+#include "Minitalk.h"
 
-void	ft_handler(int num, siginfo_t *siginfo, void *cn)
+void	ft_putstr_fd(char *s, int fd)
+{
+	int					i;
+
+	// if (s == NULL)
+	// 	return (NULL);
+	i = 0;
+	while (s[i])
+	{
+		write (fd, &s[i], 1);
+		i++;
+	}
+}
+
+static void	ft_handler(int num, siginfo_t *siginfo, void *cn)
 {
 	static unsigned char		c = 0;
 	static int		i = 0;
 	static int		pid = 0;
 
 	(void)cn;
+	if (!pid)
+		pid = siginfo->si_pid;
 	if (pid != (siginfo->si_pid))
 	{
 		pid = siginfo->si_pid;
@@ -37,7 +46,10 @@ void	ft_handler(int num, siginfo_t *siginfo, void *cn)
 	i++;
 	if (i == 8)
 	{
-		write(1, &c, 1);
+		if (c != '\0')
+			write(1, &c, 1);
+		else
+			kill(pid, SIGUSR1);
 		i = 0;
 		c = 0;
 	}
@@ -52,10 +64,9 @@ int	main(int argc, char *argv[])
 	printf("%d\n", pid);
 	sa.sa_sigaction = ft_handler;
 	sa.sa_flags = SA_SIGINFO;
-	if (sigaction(SIGUSR1, &sa, NULL))
-		kill(pid, SIGUSR1);
+	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
-	printf("BONUS say : Waiting for signal...\n");
+	ft_putstr_fd("BONUS say : Waiting for signal...  ⏳ 📡 📶\n\n", 1);
 	while (1)
 		pause();
 }
