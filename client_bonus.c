@@ -68,8 +68,8 @@ static int	function(char ch, int pid)
 			if (kill(pid, SIGUSR2) == -1)
 				return (0);
 		}
-		usleep(700);
 		i++;
+		usleep(800);
 	}
 	return (1);
 }
@@ -98,6 +98,8 @@ int	main(int argc, char *argv[])
 				return (0);
 			j++;
 		}
+		// if (function('\0', pid) == 0)
+		// 		return (0);
 	}
 	else
 		ft_putstr_fd("⛔ BONUS say : ERROR 🚫 maximum argument input more than -> 3\n", 1);

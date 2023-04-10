@@ -16,8 +16,6 @@ void	ft_putstr_fd(char *s, int fd)
 {
 	int					i;
 
-	// if (s == NULL)
-	// 	return (NULL);
 	i = 0;
 	while (s[i])
 	{
@@ -28,9 +26,9 @@ void	ft_putstr_fd(char *s, int fd)
 
 static void	ft_handler(int num, siginfo_t *siginfo, void *cn)
 {
-	static unsigned char		c = 0;
-	static int		i = 0;
-	static int		pid = 0;
+	static char	c;
+	static int	i;
+	static int	pid;
 
 	(void)cn;
 	if (!pid)
@@ -46,9 +44,8 @@ static void	ft_handler(int num, siginfo_t *siginfo, void *cn)
 	i++;
 	if (i == 8)
 	{
-		if (c != '\0')
-			write(1, &c, 1);
-		else
+		write(1, &c, 1);
+		if (c == '\0')
 			kill(pid, SIGUSR1);
 		i = 0;
 		c = 0;

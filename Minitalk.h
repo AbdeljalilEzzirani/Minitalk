@@ -29,8 +29,14 @@
 # include <signal.h>
 # include <sys/types.h>
 
-
 int				ft_atoi(const char *str);
 void			ft_putstr_fd(char *s, int fd);
+
+// struct	hundler_unicode
+// {
+// 	static int		i;
+// 	static int		i;
+// 	static char		i;
+// };
 
 #endif
