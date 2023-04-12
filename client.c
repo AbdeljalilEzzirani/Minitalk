@@ -10,40 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <signal.h>
-#include <sys/types.h>
-
-int	ft_atoi(const char *str)
-{
-	int						i;
-	int						fact;
-	long					rst;
-
-	i = 0;
-	fact = 1;
-	rst = 0;
-	while ((str[i] > 8 && str[i] < 14) || str[i] == 32)
-		i++;
-	while (str[i] == '-' || (str[i] == '+'))
-	{
-		if (str[i] == '-')
-			fact = fact * (-1);
-		if (str[i + 1] == '+' || str[i + 1] == '-')
-			return (0);
-		i++;
-	}
-	while (str[i] >= 48 && str[i] <= 57)
-	{
-		rst = (rst * 10) + fact * (str[i] - 48);
-		i++;
-	}
-	return (rst);
-}
+#include "Minitalk.h"
 
 int	function(char ch, int pid)
 {
@@ -85,5 +52,5 @@ int	main(int argc, char *argv[])
 		}
 	}
 	else
-		printf("ERROR maximum argument input more than -> 3\n");
+		ft_putstr_fd("ERROR maximum argument input more than -> 3\n", 1);
 }

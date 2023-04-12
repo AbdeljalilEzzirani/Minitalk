@@ -12,18 +12,6 @@
 
 #include "Minitalk.h"
 
-void	ft_putstr_fd(char *s, int fd)
-{
-	int					i;
-
-	i = 0;
-	while (s[i])
-	{
-		write (fd, &s[i], 1);
-		i++;
-	}
-}
-
 static void	ft_handler(int num, siginfo_t *siginfo, void *cn)
 {
 	static char	c;
@@ -57,13 +45,15 @@ int	main(int argc, char *argv[])
 	int						pid;
 	struct sigaction		sa;
 
+	(void)argc;
+	(void)argv;
 	pid = getpid();
-	printf("%d\n", pid);
+	ft_putnbr_fd(pid, 1);
 	sa.sa_sigaction = ft_handler;
 	sa.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
-	ft_putstr_fd("BONUS say : Waiting for signal...  ⏳ 📡 📶\n\n", 1);
+	ft_putstr_fd("\n\nBONUS say : Waiting for signal...  ⏳ 📡 📶\n\n", 1);
 	while (1)
 		pause();
 }
