@@ -62,10 +62,10 @@ $(NAME_C_bs) : $(OBJ_client_bs) $(OBJ_U)
 # **************************************************************************
 clean:
 	rm -rf $(OBJ_client_bs) $(OBJ_server_bs)
-	rm -rf $(OBJ_client) $(OBJ_server)
+	rm -rf $(OBJ_client) $(OBJ_server) $(OBJ_U)
 
 fclean: clean
-	rm -rf $(NAME) $(NAME_C) $(OBJ_U)
+	rm -rf $(NAME) $(NAME_C) 
 	rm -rf server_bonus client_bonus
 
 re: fclean all

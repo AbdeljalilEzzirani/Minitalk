@@ -42,7 +42,7 @@ int	main(int argc, char *argv[])
 
 	pid = ft_atoi(argv[1]);
 	j = 0;
-	if (argc == 3)
+	if (argc == 3 && pid > 0)
 	{
 		while (argv[2][j])
 		{
@@ -52,5 +52,5 @@ int	main(int argc, char *argv[])
 		}
 	}
 	else
-		ft_putstr_fd("ERROR maximum argument input more than -> 3\n", 1);
+		ft_putstr_fd("ERROR invalid argument⛔\n", 2);
 }

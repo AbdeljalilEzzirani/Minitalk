@@ -41,16 +41,19 @@ int	main(int argc, char *argv[])
 	int						pid;
 	struct sigaction		sa;
 
-	(void)argc;
 	(void)argv;
-	pid = getpid();
-	ft_putnbr_fd(pid, 1);
-	sa.sa_sigaction = ft_handler;
-	sa.sa_flags = SA_SIGINFO;
-	if (sigaction(SIGUSR1, &sa, NULL))
-		kill(pid, SIGUSR1);
-	sigaction(SIGUSR2, &sa, NULL);
-	ft_putstr_fd("\n\nWaiting for signal...  ⏳ 📡 📶\n\n", 1);
-	while (1)
-		pause();
+	if (argc == 1)
+	{
+		pid = getpid();
+		ft_putnbr_fd(pid, 1);
+		sa.sa_sigaction = ft_handler;
+		sa.sa_flags = SA_SIGINFO;
+		sigaction(SIGUSR1, &sa, NULL);
+		sigaction(SIGUSR2, &sa, NULL);
+		ft_putstr_fd("\n\nWaiting for signal...  ⏳ 📡 📶\n\n", 1);
+		while (1)
+			pause();
+	}
+	else
+		ft_putstr_fd("ERROR invalid argument\n", 2);
 }

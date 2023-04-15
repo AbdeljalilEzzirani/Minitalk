@@ -37,10 +37,10 @@ static int	function(char ch, int pid)
 
 static void	print_msg_confirmation(int pid)
 {
-	if (signal(pid, print_msg_confirmation))
+	if (pid == SIGUSR1)
 		ft_putstr_fd("\n\n✅ Mission accomplished 👍 👊 \n", 1);
 	else
-		ft_putstr_fd("🚨 The mission failed 👎 'signal return -1'\n", 1);
+		ft_putstr_fd("🚨 The mission failed 👎 'signal return -1'\n", 2);
 }
 
 int	main(int argc, char *argv[])
@@ -50,17 +50,19 @@ int	main(int argc, char *argv[])
 
 	pid = ft_atoi(argv[1]);
 	j = 0;
-	if (argc == 3)
+	if (argc == 3 && pid > 0)
 	{
-		print_msg_confirmation(pid);
 		while (argv[2][j])
 		{
 			if (function(argv[2][j], pid) == 0)
 				return (0);
 			j++;
 		}
+		signal(SIGUSR1, print_msg_confirmation);
+		if (function('\0', pid) == 0)
+			return (0);
 	}
 	else
-		ft_putstr_fd("⛔BONUSERROR🚫maximum argument input more than -> 3\n", 1);
+		ft_putstr_fd("⛔BONUS_ERROR🚫maximum argument input more than -> 3\n", 1);
 	return (0);
 }

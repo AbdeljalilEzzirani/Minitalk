@@ -32,9 +32,9 @@ static void	ft_handler(int num, siginfo_t *siginfo, void *cn)
 	i++;
 	if (i == 8)
 	{
-		write(1, &c, 1);
 		if (c == '\0')
 			kill(pid, SIGUSR1);
+		write(1, &c, 1);
 		i = 0;
 		c = 0;
 	}
@@ -45,15 +45,19 @@ int	main(int argc, char *argv[])
 	int						pid;
 	struct sigaction		sa;
 
-	(void)argc;
 	(void)argv;
-	pid = getpid();
-	ft_putnbr_fd(pid, 1);
-	sa.sa_sigaction = ft_handler;
-	sa.sa_flags = SA_SIGINFO;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
-	ft_putstr_fd("\n\nBONUS say : Waiting for signal...  ⏳ 📡 📶\n\n", 1);
-	while (1)
-		pause();
+	if (argc == 1)
+	{
+		pid = getpid();
+		ft_putnbr_fd(pid, 1);
+		sa.sa_sigaction = ft_handler;
+		sa.sa_flags = SA_SIGINFO;
+		sigaction(SIGUSR1, &sa, NULL);
+		sigaction(SIGUSR2, &sa, NULL);
+		ft_putstr_fd("\n\nBONUS say : Waiting for signal...  ⏳ 📡 📶\n\n", 1);
+		while (1)
+			pause();
+	}
+	else
+		ft_putstr_fd("ERROR invalid argument🚨\n", 2);
 }
